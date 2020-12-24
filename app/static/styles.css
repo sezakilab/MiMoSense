@@ -1,0 +1,30 @@
+.profile-thumbnail {
+    position: absolute;
+}
+.profile-header {
+    min-height: 260px;
+    margin-left: 280px;
+}
+ul.tasks {
+    list-style-type: none;
+    padding: 0px;
+    margin: 16px 0px 0px 0px;
+    border-top: 1px solid #e0e0e0;
+}
+ul.tasks li.task {
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+}
+ul.tasks li.task:hover {
+    background-color: #f0f0f0;
+}
+div.task-date {
+    float: right;
+}
+div.task-name {
+    font-weight: bold;
+}
+div.task-description {
+    margin-left: 48px;
+    min-height: 48px;
+}
