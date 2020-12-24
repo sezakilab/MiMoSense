@@ -14,7 +14,7 @@
     <li class="task">
         <div class="task-content">
             <div class="task-date">{{ moment(task.created_at).fromNow() }}</div>
-            <div class="task-name">{{ task.taskname}}</div>
+            <div class="task-name"><a href="{{ url_for('.task', taskname=task.taskname) }}">{{ task.taskname}}</a></div>
             <div class="task-description">{{ task.description }}</div>
         </div>
     </li>

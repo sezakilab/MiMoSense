@@ -23,3 +23,24 @@ def index():
 def dashboard():
     tasks = Task.query.order_by(Task.id.desc()).all()
     return render_template('dashboard.html',tasks=tasks)
+
+@main.route('/task/<taskname>',methods=['GET', 'POST'])
+@login_required
+def task(taskname):
+    #tasks = Task.query.order_by(Task.id.desc()).all()
+    return render_template('task.html')
+
+
+#Function for generating the qrcode.
+def generate_qrcode():
+    qr = qrcode.QRCode(
+        version =1,
+        error_correction= qrcode.constants.ERROR_CORRECT_L,
+        box_size = 10,
+        border = 4,
+    )
+    qr.add_data('all_infomation_here')
+    qr.make(fit=True)
+    qrcode_img=qr.make_image(fill_color="black", back_color="white")
+    qrcode_img.save('code_location')
+    return 

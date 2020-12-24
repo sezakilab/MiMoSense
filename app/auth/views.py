@@ -4,7 +4,7 @@ from . import auth
 from .. import db
 from ..models import User, Task
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm,TaskForm
+from .forms import LoginForm, RegistrationForm, NewTaskForm
 import qrcode
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -43,7 +43,7 @@ def register():
 @auth.route('/new_task', methods=['GET', 'POST'])
 @login_required
 def new_task():
-    form=TaskForm()
+    form=NewTaskForm()
     if form.validate_on_submit():
         #flash(current_user.firstname)
         task = Task(taskname=form.taskname.data,description=form.description.data,creator_id=current_user.id)
@@ -51,7 +51,7 @@ def new_task():
         db.session.commit()
         flash('A new task just established!')
         return redirect(url_for('main.dashboard'))
-    return render_template('auth/task.html',form=form)
+    return render_template('auth/newtask.html',form=form)
 
 @auth.route('/confirm/<token>')
 @login_required
@@ -98,19 +98,4 @@ def logout():
     logout_user()
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
-
-#Function for generating the qrcode.
-def generate_qrcode():
-    qr = qrcode.QRCode(
-        version =1,
-        error_correction= qrcode.constants.ERROR_CORRECT_L,
-        box_size = 10,
-        border = 4,
-    )
-    qr.add_data('all_infomation_here')
-    qr.make(fit=True)
-    qrcode_img=qr.make_image(fill_color="black", back_color="white")
-    qrcode_img.save('code_location')
-    return 
-
-
+    

@@ -40,7 +40,7 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
 
-class TaskForm(FlaskForm):
+class NewTaskForm(FlaskForm):
     taskname = StringField('Taskname', validators=[
         DataRequired(), Length(1, 64),
         Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
