@@ -4,7 +4,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from .. import db
 from ..models import User,Task
 from . import main
-from .forms import NameForm
+from .forms import NameForm, DeleteForm
 from flask import flash
 
 
@@ -31,19 +31,21 @@ def task(taskid,userid):
     #tasks = Task.query.order_by(Task.id.desc()).all()
     task=Task.query.filter(Task.id==taskid).first()
     flash(task.taskname)
-    return render_template('task.html',task=task)
+    delete_form=DeleteForm()
+    qrcodelink=generate_qrcode(task)
+    return render_template('task.html',task=task,delete_form=delete_form,qrcodelink=qrcodelink)
 
 
 #Function for generating the qrcode.
-def generate_qrcode():
-    qr = qrcode.QRCode(
-        version =1,
-        error_correction= qrcode.constants.ERROR_CORRECT_L,
-        box_size = 10,
-        border = 4,
-    )
-    qr.add_data('all_infomation_here')
-    qr.make(fit=True)
-    qrcode_img=qr.make_image(fill_color="black", back_color="white")
-    qrcode_img.save('code_location')
-    return 
+def generate_qrcode(task):
+    api = 'https://chart.googleapis.com/chart?'
+    #Kind of the pic we need to generate.
+    cht='qr'
+    #Error toleration rate.
+    chld='H'
+    #Size of the qr code.
+    chs='200x200'
+    #Information in the qr code.
+    chl='taskid'+str(task.id)+';taskname:'+task.taskname+';taskdescription:'+task.description
+    link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+chl
+    return link

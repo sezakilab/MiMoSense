@@ -1,16 +1,95 @@
+<!DOCTYPE html>
+
+<head>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>  
+
+</head>
+
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}Sensing Project - Task{% endblock %}
 
+
 {% block page_content %}
-<div class="page-header">
+<div class="task-title">
     <h1>{{task.taskname}}</h1>
+    {{wtf.quick_form(delete_form)}}
+</div>
+<div class="task-status">
+    <div class="container">
+    
+        <strong>Task Status:</strong>
+    
+        <br/>
+    
+        <input checked data-toggle="toggle" data-onstyle="warning" type="checkbox">
+    
+    </div>
+
+</div>
+<div class="task-description">
+    <h4>Description:</h4>
+    <p>{{task.description}}</p>
+</div>
+<div class="task-sensors">
+    <h4>Sensors:</h4>
+    <p>{{task.sensors}}</p>
+</div>
+<div class="task-plugins">
+    <h4>Plugins:</h4>
+    <p>{{task.plugins}}</p>
+</div>
+<div class="task-time_related">
+    <h4>Created:</h4>
+    <p>{{task.created_at}}</p>
+</div>
+<div class="task-devices">
+    <h4>Devices:</h4>
+    <p>None</p>
 </div>
 
-<a data-toggle="modal" data-target="#myModal">Show QRcode</a>
-<div id="myModal" class="modal fade" role="dialog">
-    ...
+<td>
+    <!-- <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete">删除</button>-->
+    <a class='text-red' data-toggle="modal" data-href='#'
+        data-target="#confirm-delete">Show QRcode</a>
+</td>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            QRcode
+        </div>
+        <div class="modal-body">
+            <p>{{qrcodelink}}</p>
+            <img class="qrcode-for-task" src="{{qrcodelink}}">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Confirm</button>
+            <a class="btn btn-danger btn-ok">Download</a>
+        </div>
     </div>
+</div>
+</div>
            
+{% endblock %}
+
+ 
+{% block script %}
+{{ super() }}
+<script>
+    $('#confirm-delete').on('show.bs.modal', function (e) {
+        $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+    });
+</script>
+ 
 {% endblock %}
