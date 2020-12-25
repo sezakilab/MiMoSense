@@ -5,6 +5,7 @@ from .. import db
 from ..models import User,Task
 from . import main
 from .forms import NameForm
+from flask import flash
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -24,11 +25,13 @@ def dashboard():
     tasks = Task.query.order_by(Task.id.desc()).all()
     return render_template('dashboard.html',tasks=tasks)
 
-@main.route('/task/<taskname>',methods=['GET', 'POST'])
+@main.route('/task/<int:taskid>/<userid>',methods=['GET', 'POST'])
 @login_required
-def task(taskname):
+def task(taskid,userid):
     #tasks = Task.query.order_by(Task.id.desc()).all()
-    return render_template('task.html')
+    task=Task.query.filter(Task.id==taskid).first()
+    flash(task.taskname)
+    return render_template('task.html',task=task)
 
 
 #Function for generating the qrcode.

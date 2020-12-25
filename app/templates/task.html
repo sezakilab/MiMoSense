@@ -5,9 +5,12 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Task name</h1>
+    <h1>{{task.taskname}}</h1>
 </div>
 
-<div class="Show_QRcode"><a href="#">Show QRcode</a></div>
+<a data-toggle="modal" data-target="#myModal">Show QRcode</a>
+<div id="myModal" class="modal fade" role="dialog">
+    ...
+    </div>
            
 {% endblock %}
