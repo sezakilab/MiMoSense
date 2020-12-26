@@ -4,8 +4,9 @@ from flask_login import login_user, logout_user, login_required, current_user
 from .. import db
 from ..models import User,Task
 from . import main
-from .forms import NameForm, DeleteForm
+from .forms import NameForm, DeleteForm, TaskStatusForm
 from flask import flash
+import os
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -32,8 +33,15 @@ def task(taskid,userid):
     task=Task.query.filter(Task.id==taskid).first()
     flash(task.taskname)
     delete_form=DeleteForm()
+    taskstatusform = TaskStatusForm()
+    if taskstatusform.validate_on_submit():
+        #Change broker's status according to radiofield's value.
+        flash(taskstatusform.taskstatus.data)
+        #os.system('brew services stop mosquitto')
+        #os.system('brew services start mosquitto')
     qrcodelink=generate_qrcode(task)
-    return render_template('task.html',task=task,delete_form=delete_form,qrcodelink=qrcodelink)
+    return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,qrcodelink=qrcodelink)
+
 
 
 #Function for generating the qrcode.

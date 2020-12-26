@@ -71,6 +71,8 @@ class Task(db.Model):
     created_at = db.Column(db.DateTime(), unique=False,default=datetime.utcnow)
     updated_at = db.Column(db.DateTime(255), unique=False, nullable=True)
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    task_status = db.Column(db.Integer,unique=False, default=0 )
+    delete_status = db.Column(db.Integer,unique=False, default=0 )
 
     def __repr__(self):
         return '<Task %r>' % self.taskname
