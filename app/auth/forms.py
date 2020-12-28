@@ -30,6 +30,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[
         DataRequired(), EqualTo('password2', message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
+    #Create new database for new user.
     submit = SubmitField('Register')
 
     def validate_email(self, field):
@@ -39,6 +40,7 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already in use.')
+
 
 class NewTaskForm(FlaskForm):
     taskname = StringField('Taskname', validators=[

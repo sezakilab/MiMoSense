@@ -73,6 +73,7 @@ class Task(db.Model):
     creator_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     task_status = db.Column(db.Integer,unique=False, default=0 )
     delete_status = db.Column(db.Integer,unique=False, default=0 )
+    devices = db.Column(db.String(255), unique=False, nullable=True)
 
     def __repr__(self):
         return '<Task %r>' % self.taskname

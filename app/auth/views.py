@@ -6,7 +6,8 @@ from ..models import User, Task
 from ..email import send_email
 from .forms import LoginForm, RegistrationForm, NewTaskForm
 import qrcode
-
+import os
+import pymysql
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -34,6 +35,7 @@ def register():
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
+        create_new_database(user)
         token = user.generate_confirmation_token()
         send_email(user.email, 'Confirm Your Account',
                         'auth/email/confirm', user=user, token=token)
@@ -106,3 +108,13 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
     
+#Function for create new user's database.
+def create_new_database(user):
+    conn = pymysql.connect(host='localhost',user='root',password='han784533',charset='utf8mb4')
+    cursor = conn.cursor()
+    sql= "CREATE DATABASE IF NOT EXISTS "+user.lastname+"_"+str(user.id)
+    cursor.execute(sql)
+    sql2="CREATE USER '%s'@'localhost' IDENTIFIED BY 'han784533';"%(user.lastname+"_"+str(user.id))
+    cursor.execute(sql2)
+    sql3="GRANT Select, Insert, Update, Delete ON %s to '%s'@'localhost';"%(user.lastname+"_"+str(user.id)+".*",user.lastname+"_"+str(user.id))
+    cursor.execute(sql3)
