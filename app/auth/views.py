@@ -56,6 +56,8 @@ def new_task():
         db.session.add(task)
         db.session.commit()
         flash('A new task just established!')
+        #Create a new table in user's database.
+        create_new_databasetable(current_user,task)
         return redirect(url_for('main.dashboard'))
     return render_template('auth/newtask.html', form=form)
 
@@ -108,7 +110,7 @@ def logout():
     flash('You have been logged out.')
     return redirect(url_for('main.index'))
     
-#Function for create new user's database.
+#Function for creating new user's database.
 def create_new_database(user):
     conn = pymysql.connect(host='localhost',user='root',password='han784533',charset='utf8mb4')
     cursor = conn.cursor()
@@ -116,5 +118,12 @@ def create_new_database(user):
     cursor.execute(sql)
     sql2="CREATE USER '%s'@'localhost' IDENTIFIED BY 'han784533';"%(user.lastname+"_"+str(user.id))
     cursor.execute(sql2)
-    sql3="GRANT Select, Insert, Update, Delete ON %s to '%s'@'localhost';"%(user.lastname+"_"+str(user.id)+".*",user.lastname+"_"+str(user.id))
+    sql3="GRANT Create, Select, Insert, Update, Delete ON %s to '%s'@'localhost';"%(user.lastname+"_"+str(user.id)+".*",user.lastname+"_"+str(user.id))
     cursor.execute(sql3)
+
+#Function for creating user's task table in user's database.
+def create_new_databasetable(current_user,task):
+    conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)
+    cursor = conn.cursor()
+    sql = "CREATE TABLE %s (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY);"%(task.taskname+"_"+str(task.id))
+    cursor.execute(sql)
