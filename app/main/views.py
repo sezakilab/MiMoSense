@@ -7,6 +7,7 @@ from . import main
 from .forms import NameForm, DeleteForm, TaskStatusForm
 from flask import flash
 import os
+import ast
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -52,8 +53,9 @@ def generate_qrcode(task):
     #Error toleration rate.
     chld='H'
     #Size of the qr code.
-    chs='200x200'
+    chs='300x300'
     #Information in the qr code.
-    chl='taskid'+str(task.id)+';taskname:'+task.taskname+';taskdescription:'+task.description
-    link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+chl
+    sensors_dict=ast.literal_eval(task.sensors)
+    chl={'task_id':task.id,'task_name':task.taskname,'task_description':task.description,'task_sensors':sensors_dict,'task_created_at':task.created_at,'task_creator_id':task.creator_id}
+    link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+str(chl)
     return link

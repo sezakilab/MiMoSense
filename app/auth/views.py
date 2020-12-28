@@ -7,6 +7,7 @@ from ..email import send_email
 from .forms import LoginForm, RegistrationForm, NewTaskForm
 import qrcode
 
+
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -17,7 +18,7 @@ def login():
             next = request.args.get('next')
             if next is None or not next.startswith('/'):
                 next = url_for('main.index')
-                #flash(user.id)
+                # flash(user.id)
             return redirect(next)
         flash('Invalid username or password.')
     return render_template('auth/login.html', form=form)
@@ -40,18 +41,22 @@ def register():
         return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
 
+
 @auth.route('/new_task', methods=['GET', 'POST'])
 @login_required
 def new_task():
-    form=NewTaskForm()
+    form = NewTaskForm()
     if form.validate_on_submit():
-        #flash(current_user.firstname)
-        task = Task(taskname=form.taskname.data,description=form.description.data,creator_id=current_user.id)
+        # flash(current_user.firstname)
+        sensors = {'camera' : form.camera.data, 'co2' : form.co2.data, 'air_pressure' : form.air_pressure.data, 'motion' : form.motion.data, 'audio' : form.audio.data, 'uv' : form.uv.data, 'humidity' : form.humidity.data, 'temp' : form.temp.data}
+        
+        task = Task(taskname=form.taskname.data, description=form.description.data, sensors=str(sensors),creator_id=current_user.id)
         db.session.add(task)
         db.session.commit()
         flash('A new task just established!')
         return redirect(url_for('main.dashboard'))
-    return render_template('auth/newtask.html',form=form)
+    return render_template('auth/newtask.html', form=form)
+
 
 @auth.route('/confirm/<token>')
 @login_required
@@ -76,11 +81,13 @@ def before_request():
                 and request.endpoint != 'static':
             return redirect(url_for('auth.unconfirmed'))
 
+
 @auth.route('/unconfirmed')
 def unconfirmed():
     if current_user.is_anonymous or current_user.confirmed:
         return redirect(url_for('main.index'))
     return render_template('auth/unconfirmed.html')
+
 
 @auth.route('/confirm')
 @login_required
