@@ -78,3 +78,11 @@ class Task(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.taskname
 
+class Client_info(db.Model):
+    __tablename__ = 'client_info'
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
+    client_ip = db.Column(db.String(50), unique=False, nullable=True)
+    client_kind = db.Column(db.String(50), unique=False, nullable=False)
+    client_name = db.Column(db.String(50), unique=False, nullable=False)
+    created_time = db.Column(db.DateTime(), unique=False,default=datetime.utcnow)
