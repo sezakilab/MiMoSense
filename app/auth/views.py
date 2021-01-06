@@ -8,6 +8,7 @@ from .forms import LoginForm, RegistrationForm, NewTaskForm
 import qrcode
 import os
 import pymysql
+import random
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -35,6 +36,7 @@ def register():
                     password=form.password.data)
         db.session.add(user)
         db.session.commit()
+        #Create a new database for new user.
         create_new_database(user)
         token = user.generate_confirmation_token()
         send_email(user.email, 'Confirm Your Account',
@@ -51,8 +53,8 @@ def new_task():
     if form.validate_on_submit():
         # flash(current_user.firstname)
         sensors = {'camera' : form.camera.data, 'co2' : form.co2.data, 'air_pressure' : form.air_pressure.data, 'motion' : form.motion.data, 'audio' : form.audio.data, 'uv' : form.uv.data, 'humidity' : form.humidity.data, 'temp' : form.temp.data}
-        
-        task = Task(taskname=form.taskname.data, description=form.description.data, sensors=str(sensors),creator_id=current_user.id)
+        cert=generate_certificate()
+        task = Task(taskname=form.taskname.data, description=form.description.data, sensors=str(sensors),creator_id=current_user.id,certificate=cert)
         db.session.add(task)
         db.session.commit()
         flash('A new task just established!')
@@ -127,3 +129,11 @@ def create_new_databasetable(current_user,task):
     cursor = conn.cursor()
     sql = "CREATE TABLE %s (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY);"%(task.taskname+"_"+str(task.id))
     cursor.execute(sql)
+
+#Function for generating new certificate for new task.
+def generate_certificate():
+    cert = ""
+    for i in range(6):
+        ch = chr(random.randrange(ord('0'), ord('9') + 1))
+        cert += ch
+    return cert

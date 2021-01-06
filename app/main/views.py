@@ -60,7 +60,7 @@ def generate_qrcode(task):
     #Information in the qr code.
     sensors_dict=ast.literal_eval(task.sensors)
     server_info='127.0.0.1:3306'
-    chl={'task_id':task.id,'task_name':task.taskname,'task_description':task.description,'task_sensors':sensors_dict,'task_created_at':task.created_at,'task_creator_id':task.creator_id,'server_info':server_info}
+    chl={'task_id':task.id,'task_name':task.taskname,'task_description':task.description,'task_sensors':sensors_dict,'task_created_at':task.created_at,'task_creator_id':task.creator_id,'task_certificate':task.certificate,'server_info':server_info}
     link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+str(chl)
     return link
 
