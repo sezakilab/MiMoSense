@@ -26,7 +26,7 @@ def index():
 @main.route('/dashboard',methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    tasks = Task.query.order_by(Task.id.desc()).all()
+    tasks = Task.query.filter(Task.creator_id==current_user.id).order_by(Task.id.desc()).all()
     return render_template('dashboard.html',tasks=tasks)
 
 @main.route('/task/<int:taskid>/<userid>',methods=['GET', 'POST'])

@@ -5,6 +5,7 @@ from flask_login import UserMixin
 from datetime import datetime
 from . import db, login_manager
 import os
+from app.exceptions import ValidationError
 
 
 class User(UserMixin, db.Model):
@@ -86,5 +87,11 @@ class Device(db.Model):
     device_kind = db.Column(db.String(50), unique=False, nullable=False)
     device_name = db.Column(db.String(50), unique=False, nullable=False)
     created_time = db.Column(db.DateTime(), unique=False,default=datetime.utcnow)
-
-#def from_json(json_device):
+    device_status = db.Column(db.Integer,unique=False, default=0 )
+    
+    @staticmethod
+    def from_json(json_device):
+        device = json_device.get('device_ip')
+        if device is None or device == '':
+            raise ValidationError('device does not have a body')
+        return Device(device=device)
