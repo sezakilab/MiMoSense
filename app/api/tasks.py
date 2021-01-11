@@ -2,8 +2,6 @@ from flask import jsonify,request
 from ..models import Task, Device
 from . import api
 from .. import db
-from future.backports.urllib import request
-
 
 @api.route('/tasks/<int:id>/join/',methods=['POST'])
 def new_device(id):
@@ -18,7 +16,7 @@ def new_device(id):
     join_result = True
     return jsonify({'join_result':join_result,'device_id':device.id,'task_status':status})
 
-@api.route('/tasks/<int:device_id>/<int:device_status>/update',method=['PUT'])
+@api.route('/tasks/<int:device_id>/<int:device_status>/update',methods=['PUT'])
 def update_device_status(device_status):
     device = Device.query.get_or_404(device_id)
     device.device_status = device_status
