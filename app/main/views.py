@@ -59,8 +59,8 @@ def generate_qrcode(task):
     #Information in the qr code.
     sensors_dict=ast.literal_eval(task.sensors)
     server_ip=get_ip()
-    chl={'task_id':task.id,'task_name':task.taskname,'task_description':task.description,'task_sensors':sensors_dict,'task_created_at':task.created_at,'task_creator_id':task.creator_id,'task_certificate':task.certificate,'server_ip':server_ip}
-    link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+str(chl)
+    chl='{"task_id":'+str(task.id)+',"task_name":'+task.taskname+',"task_description":'+task.description+',"task_sensors":'+str(sensors_dict)+',"task_created_at":'+str(task.created_at)+',"task_creator_id":'+str(task.creator_id)+',"task_certificate":'+str(task.certificate)+',"server_ip":'+server_ip+'}'
+    link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+chl
     return link
 
 def get_ip():
