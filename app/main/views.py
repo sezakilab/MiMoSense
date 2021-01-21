@@ -37,6 +37,11 @@ def task(taskid,userid):
     task=Task.query.filter(Task.id==taskid).first()
     delete_form=DeleteForm()
     taskstatusform = TaskStatusForm()
+    if(task.task_status == 0):
+        taskstatusform.taskstatus.data='off'
+    elif(task.task_status == 1):
+        taskstatusform.taskstatus.data='on'
+        
     description_edit_form = TaskDescriptionForm()
     if taskstatusform.validate_on_submit():
         #Change subscriber's status according to radiofield's value.
@@ -44,10 +49,12 @@ def task(taskid,userid):
             flash("You just turn on the task: "+task.taskname)
             change_task_status(task,1)
             mqtt.subscribe(task.taskname)
+            print('subscribe to '+task.taskname)
         elif (taskstatusform.taskstatus.data == 'off'):
             flash("You just turn off the task: "+task.taskname)
             change_task_status(task,0)
             mqtt.subscribe(task.taskname)
+            print('unsubscribe '+task.taskname)
 
     qrcodelink=generate_qrcode(task)
     return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,description_edit_form=description_edit_form,qrcodelink=qrcodelink)
@@ -73,14 +80,9 @@ def get_ip():
     ip = response.text
 
     return ip
-'''
-@mqtt.on_connect()
-def handle_connect(client,  userdata, flags, rc):
-    mqtt.subscribe('test')
-    print('connected!')'''
 
 @mqtt.on_message()
-def handle_mqtt_message(client, userdata, message):
+def handle_mqtt_message(client,userdata, message):
     print("message get!")
     data = dict(
         topic=message.topic,
@@ -90,8 +92,9 @@ def handle_mqtt_message(client, userdata, message):
     #write the data into the database.
 
     #Flash the data on the html.
-
+'''
 def collect_data_to_database(current_user,data):
+    #Need to connect with task's database, rather than current user's database.
     conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)
     cursor = conn.cursor()
     #Since data is in json format, we need to break it.
@@ -103,7 +106,7 @@ def collect_data_to_database(current_user,data):
     temperature_data = data_json['temperature']
 
     sql = "INSERT INTO %{table} VALUES (%{client_id},%{temperature_data});" %{"table":task.taskname+"_"+str(task.id),"client_id":client_id,"temperature_data":temperature_data}
-    cursor.execute(sql)
+    cursor.execute(sql)'''
 
 def change_task_status(task, task_status):
     task.task_status=task_status

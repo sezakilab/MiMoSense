@@ -41,7 +41,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     mqtt.init_app(app)
-    mqtt.subscribe('test')
+    #mqtt.subscribe('test')
     socketio.init_app(app)
     #socketio.run(app,debug=True,host='0.0.0.0',port=5000)
 
