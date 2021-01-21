@@ -10,6 +10,8 @@ from . import main
 from .forms import NameForm, DeleteForm, TaskStatusForm
 from flask import flash
 from .. import mqtt
+import pymysql
+import json
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
@@ -33,17 +35,19 @@ def dashboard():
 def task(taskid,userid):
     #tasks = Task.query.order_by(Task.id.desc()).all()
     task=Task.query.filter(Task.id==taskid).first()
-    flash(task.taskname)
     delete_form=DeleteForm()
     taskstatusform = TaskStatusForm()
     if taskstatusform.validate_on_submit():
-        #Change broker's status according to radiofield's value.
-        flash(taskstatusform.taskstatus.data)
-        #os.system('brew services stop mosquitto')
-        #mqtt.unsubscribe('taskname')
-        #os.system('brew services start mosquitto')
-        #And subscribe to a topic
-        #mqtt.subscribe('taskname')
+        #Change subscriber's status according to radiofield's value.
+        if(taskstatusform.taskstatus.data == 'on'):
+            flash("You just turn on the task: "+task.taskname)
+            change_task_status(task,1)
+            mqtt.subscribe(task.taskname)
+        elif (taskstatusform.taskstatus.data == 'off'):
+            flash("You just turn off the task: "+task.taskname)
+            change_task_status(task,0)
+            mqtt.subscribe(task.taskname)
+
     qrcodelink=generate_qrcode(task)
     return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,qrcodelink=qrcodelink)
 
@@ -83,4 +87,24 @@ def handle_mqtt_message(client, userdata, message):
     )
     print(data)
     #write the data into the database.
+
     #Display the data on the html.
+
+def collect_data_to_database(current_user,data):
+    conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)
+    cursor = conn.cursor()
+    #Since data is in json format, we need to break it.
+    data_json = json.loads(data)
+    task_name = data_json['task_name']
+    task_id = data_json['task_id']
+    client_id = data_json['client_id']
+    client_ip = data_json['client_ip']
+    temperature_data = data_json['temperature']
+
+    sql = "INSERT INTO %{table} VALUES (%{client_id},%{temperature_data});" %{"table":task.taskname+"_"+str(task.id),"client_id":client_id,"temperature_data":temperature_data}
+    cursor.execute(sql)
+
+def change_task_status(task, task_status):
+    task.task_status=task_status
+    db.session.add(task)
+    db.session.commit()
