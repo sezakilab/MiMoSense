@@ -14,3 +14,9 @@ class TaskStatusForm(FlaskForm):
     taskstatus = RadioField('Task Status', choices=[('on', 'On'), ('off', 'Off')],default='off',
                                   validators=[DataRequired()])
     confirm = SubmitField('Confirm')
+
+class TaskDescriptionForm(FlaskForm):
+    descrip_edit = SubmitField('Edit Description')
+
+class Sen_Plug_EditForm(FlaskForm):
+    sen_Plug_edit = SubmitField('Edit Sensors & Plugins')

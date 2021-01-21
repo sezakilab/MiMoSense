@@ -10,6 +10,9 @@
     <h1>{{task.taskname}}</h1>
     {{wtf.quick_form(delete_form)}}
 </div>
+<div class="task-owner">
+    <h4>Task Owner:</h4>
+</div>
 <div class="task-status">
     <h4>Task Status:</h4>
     {{wtf.quick_form(taskstatusform)}}
@@ -18,6 +21,7 @@
 <div class="task-description">
     <h4>Description:</h4>
     <p>{{task.description}}</p>
+    {{wtf.quick_form(description_edit_form)}}
 </div>
 <div class="task-sensors">
     <h4>Sensors:</h4>
@@ -27,14 +31,18 @@
     <h4>Plugins:</h4>
     <p>{{task.plugins}}</p>
 </div>
-<div class="task-time_related">
+<div class="task-created">
     <h4>Created:</h4>
     <p>{{task.created_at}}</p>
+</div>
+<div class="task-databasename">
+    <h4>Database Name:</h4>
 </div>
 <div class="task-devices">
     <h4>Devices:</h4>
     <p>None</p>
 </div>
+
 
 <td>
     <!-- <button class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete">删除</button>-->
@@ -58,6 +66,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="Real-time Data">
+    <h4>Real-time Data</h4>
 </div>
 
 {% endblock %}

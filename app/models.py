@@ -83,9 +83,9 @@ class Device(db.Model):
     __tablename__ = 'devices'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
-    device_ip = db.Column(db.String(50), unique=False, nullable=True)
+    device_ip = db.Column(db.String(50), unique=False, nullable=False)
     device_kind = db.Column(db.String(50), unique=False, nullable=False)
-    device_name = db.Column(db.String(50), unique=False, nullable=False)
+    device_name = db.Column(db.String(50), unique=False, nullable=True)
     created_time = db.Column(db.DateTime(), unique=False,default=datetime.utcnow)
     device_status = db.Column(db.Integer,unique=False, default=0 )
     

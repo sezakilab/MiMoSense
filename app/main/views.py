@@ -7,7 +7,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from .. import db
 from ..models import User,Task
 from . import main
-from .forms import NameForm, DeleteForm, TaskStatusForm
+from .forms import NameForm, DeleteForm, TaskStatusForm, TaskDescriptionForm, Sen_Plug_EditForm
 from flask import flash
 from .. import mqtt
 import pymysql
@@ -37,6 +37,7 @@ def task(taskid,userid):
     task=Task.query.filter(Task.id==taskid).first()
     delete_form=DeleteForm()
     taskstatusform = TaskStatusForm()
+    description_edit_form = TaskDescriptionForm()
     if taskstatusform.validate_on_submit():
         #Change subscriber's status according to radiofield's value.
         if(taskstatusform.taskstatus.data == 'on'):
@@ -49,7 +50,7 @@ def task(taskid,userid):
             mqtt.subscribe(task.taskname)
 
     qrcodelink=generate_qrcode(task)
-    return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,qrcodelink=qrcodelink)
+    return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,description_edit_form=description_edit_form,qrcodelink=qrcodelink)
 
 #Function for generating the qrcode.
 def generate_qrcode(task):
@@ -88,7 +89,7 @@ def handle_mqtt_message(client, userdata, message):
     print(data)
     #write the data into the database.
 
-    #Display the data on the html.
+    #Flash the data on the html.
 
 def collect_data_to_database(current_user,data):
     conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)

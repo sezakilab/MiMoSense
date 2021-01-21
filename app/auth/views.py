@@ -125,6 +125,7 @@ def create_new_database(user):
 
 #Function for creating user's task table in user's database.
 def create_new_databasetable(current_user,task):
+    #SQLALCHEMY_DATABASE_URI2 = 'mysql+pymysql://'+current_user.lastname+"_"+str(current_user.id)+':han784533@localhost:3306/'+current_user.lastname+"_"+str(current_user.id)
     conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)
     cursor = conn.cursor()
     sql = "CREATE TABLE %s (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY);"%(task.taskname+"_"+str(task.id))
