@@ -33,15 +33,15 @@ def register():
         user = User(email=form.email.data,
                     firstname=form.firstname.data,
                     lastname=form.lastname.data,
-                    password=form.password.data)
+                    password=form.password.data,
+                    confirmed=1)
         db.session.add(user)
         db.session.commit()
         #Create a new database for new user.
         create_new_database(user)
-        token = user.generate_confirmation_token()
-        send_email(user.email, 'Confirm Your Account',
-                        'auth/email/confirm', user=user, token=token)
-        flash('A confirmation email has been sent to you by email.')
+        #token = user.generate_confirmation_token()
+        #send_email(user.email, 'Confirm Your Account','auth/email/confirm', user=user, token=token)
+        flash('You have registered your account. Thanks!')
         return redirect(url_for('main.index'))
     return render_template('auth/register.html', form=form)
 
