@@ -71,7 +71,8 @@ def generate_qrcode(task):
     #Information in the qr code.
     sensors_dict=ast.literal_eval(task.sensors)
     server_ip=get_ip()
-    chl='{"task_id":'+str(task.id)+',"task_name":'+task.taskname+',"task_description":'+task.description+',"task_sensors":'+str(sensors_dict)+',"task_created_at":'+str(task.created_at)+',"task_creator_id":'+str(task.creator_id)+',"task_certificate":'+str(task.certificate)+',"server_ip":'+server_ip+'}'
+    chl=server_ip+':5000/api/v1/tasks/'+str(task.id)
+    #chl='{"task_id":'+str(task.id)+',"task_name":'+task.taskname+',"task_description":'+task.description+',"task_sensors":'+str(sensors_dict)+',"task_created_at":'+str(task.created_at)+',"task_creator_id":'+str(task.creator_id)+',"task_certificate":'+str(task.certificate)+',"server_ip":'+server_ip+'}'
     link=api+'cht='+cht+'&chld='+chld+'&chs='+chs+'&chl='+chl
     return link
 
@@ -80,33 +81,6 @@ def get_ip():
     ip = response.text
 
     return ip
-
-@mqtt.on_message()
-def handle_mqtt_message(client,userdata, message):
-    print("message get!")
-    data = dict(
-        topic=message.topic,
-        payload=message.payload.decode()
-    )
-    print(data)
-    #write the data into the database.
-
-    #Flash the data on the html.
-'''
-def collect_data_to_database(current_user,data):
-    #Need to connect with task's database, rather than current user's database.
-    conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)
-    cursor = conn.cursor()
-    #Since data is in json format, we need to break it.
-    data_json = json.loads(data)
-    task_name = data_json['task_name']
-    task_id = data_json['task_id']
-    client_id = data_json['client_id']
-    client_ip = data_json['client_ip']
-    temperature_data = data_json['temperature']
-
-    sql = "INSERT INTO %{table} VALUES (%{client_id},%{temperature_data});" %{"table":task.taskname+"_"+str(task.id),"client_id":client_id,"temperature_data":temperature_data}
-    cursor.execute(sql)'''
 
 def change_task_status(task, task_status):
     task.task_status=task_status

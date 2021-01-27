@@ -120,8 +120,10 @@ def create_new_database(user):
     cursor.execute(sql)
     sql2="CREATE USER '%s'@'localhost' IDENTIFIED BY 'han784533';"%(user.lastname+"_"+str(user.id))
     cursor.execute(sql2)
-    sql3="GRANT Create, Select, Insert, Update, Delete ON %s to '%s'@'localhost';"%(user.lastname+"_"+str(user.id)+".*",user.lastname+"_"+str(user.id))
+    sql3="GRANT INSERT ON %s TO '%s'@'localhost';"%("`"+user.lastname+"_"+str(user.id)+"`.*",user.lastname+"_"+str(user.id))
     cursor.execute(sql3)
+    sql4="FLUSH PRIVILEGES;"
+    cursor.execute(sql4)
 
 #Function for creating user's task table in user's database.
 def create_new_databasetable(current_user,task):
