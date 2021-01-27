@@ -69,5 +69,6 @@ def handle_mqtt_message(client,userdata, message):
         cursor = conn.cursor()
         sql = "INSERT INTO %s VALUES (1,%d,'2021-01-21 08:56:10','camera','temp','humid','co2','air_pressure','motion','uv');" %(task_name+"_"+str(task_id),client_id)
         cursor.execute(sql)
+        cursor.connection.commit()
         print("Just wrote to database!")
         #Flash the data on the html.

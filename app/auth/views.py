@@ -118,10 +118,13 @@ def create_new_database(user):
     cursor = conn.cursor()
     sql= "CREATE DATABASE IF NOT EXISTS "+user.lastname+"_"+str(user.id)
     cursor.execute(sql)
+    cursor.connection.commit()
     sql2="CREATE USER '%s'@'localhost' IDENTIFIED BY 'han784533';"%(user.lastname+"_"+str(user.id))
     cursor.execute(sql2)
+    cursor.connection.commit()
     sql3="GRANT CREATE, INSERT ON %s TO '%s'@'localhost';"%("`"+user.lastname+"_"+str(user.id)+"`.*",user.lastname+"_"+str(user.id))
     cursor.execute(sql3)
+    cursor.connection.commit()
     sql4="FLUSH PRIVILEGES;"
     cursor.execute(sql4)
 
@@ -132,6 +135,7 @@ def create_new_databasetable(current_user,task):
     sql = "CREATE TABLE %s (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, client_id INT, receve_time DATETIME, camera varchar(20), temperature varchar(20), humidity varchar(20), co2 varchar(20), air_pressure varchar(20), motion varchar(20), uv varchar(20));"%(task.taskname+"_"+str(task.id))
     #Create data table with all sensors as column.
     cursor.execute(sql)
+    cursor.connection.commit()
 
 #Function for generating new certificate for new task.
 def generate_certificate():
