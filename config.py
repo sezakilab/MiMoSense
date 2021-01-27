@@ -21,15 +21,15 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:han784533@localhost:3306/sensing-project'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:han784533@localhost:3306/sensing_project'
 
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:han784533@localhost:3306/sensing-project'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:han784533@localhost:3306/sensing_project'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:han784533@localhost:3306/sensing-project'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:han784533@localhost:3306/sensing_project'
 
 
 config = {
