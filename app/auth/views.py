@@ -120,7 +120,7 @@ def create_new_database(user):
     cursor.execute(sql)
     sql2="CREATE USER '%s'@'localhost' IDENTIFIED BY 'han784533';"%(user.lastname+"_"+str(user.id))
     cursor.execute(sql2)
-    sql3="GRANT INSERT ON %s TO '%s'@'localhost';"%("`"+user.lastname+"_"+str(user.id)+"`.*",user.lastname+"_"+str(user.id))
+    sql3="GRANT CREATE, INSERT ON %s TO '%s'@'localhost';"%("`"+user.lastname+"_"+str(user.id)+"`.*",user.lastname+"_"+str(user.id))
     cursor.execute(sql3)
     sql4="FLUSH PRIVILEGES;"
     cursor.execute(sql4)
