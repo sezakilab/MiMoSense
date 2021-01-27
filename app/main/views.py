@@ -30,11 +30,15 @@ def dashboard():
     tasks = Task.query.filter(Task.creator_id==current_user.id).order_by(Task.id.desc()).all()
     return render_template('dashboard.html',tasks=tasks)
 
-@main.route('/task/<int:taskid>/<userid>',methods=['GET', 'POST'])
+@main.route('/task/<int:taskid>',methods=['GET', 'POST'])
 @login_required
-def task(taskid,userid):
+def task(taskid):
     #tasks = Task.query.order_by(Task.id.desc()).all()
     task=Task.query.filter(Task.id==taskid).first()
+    #Need to check current userid with task's creator id, otherwise can not access.
+    if(task.creator_id != current_user.id):
+        return render_template('404.html')
+
     delete_form=DeleteForm()
     taskstatusform = TaskStatusForm()
     if(task.task_status == 0):
