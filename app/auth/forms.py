@@ -19,13 +19,13 @@ class RegistrationForm(FlaskForm):
                                              Email()])
     firstname = StringField('Firstname', validators=[
         DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-               'Firstname must have only letters, numbers, dots or '
+        Regexp('^[A-Za-z][A-Za-z0-9_]*$', 0,
+               'Firstname must have only letters, numbers or '
                'underscores')])
     lastname = StringField('Lastname', validators=[
         DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-               'Lastname must have only letters, numbers, dots or '
+        Regexp('^[A-Za-z][A-Za-z0-9_]*$', 0,
+               'Lastname must have only letters, numbers or '
                'underscores')])          
     password = PasswordField('Password', validators=[
         DataRequired(), EqualTo('password2', message='Passwords must match.')])
@@ -45,13 +45,13 @@ class RegistrationForm(FlaskForm):
 class NewTaskForm(FlaskForm):
     taskname = StringField('Taskname', validators=[
         DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-               'Taskname must have only letters, numbers, dots or '
+        Regexp('^[A-Za-z][A-Za-z0-9_]*$', 0,
+               'Taskname must have only letters, numbers or '
                'underscores')])
     description = StringField('Description', validators=[
         DataRequired(), Length(1, 64),
-        Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0,
-               'Description must have only letters, numbers, dots or '
+        Regexp('^[A-Za-z][A-Za-z0-9 ,._]*$', 0,
+               'Description must have only letters, numbers, space or '
                'underscores')])
     #sensors_text =TextField('Sensors')
     camera =BooleanField('Camera')
