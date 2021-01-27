@@ -18,7 +18,10 @@
                     <li><a href="/dashboard">Dashboard</a></li>
                 </ul>
                 <ul class="nav navbar-nav">
+                    {% if current_user.is_authenticated %}
+                    {% else %}
                     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    {% endif %}
                     {% if current_user.is_authenticated %}
                     <li><a href="{{ url_for('auth.new_task') }}">New Task</a></li>
                     {% endif %}
