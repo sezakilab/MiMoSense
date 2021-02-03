@@ -85,9 +85,9 @@ class Device(db.Model):
     task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'))
     device_ip = db.Column(db.String(50), unique=False, nullable=False)
     device_kind = db.Column(db.String(50), unique=False, nullable=False)
-    device_name = db.Column(db.String(50), unique=False, nullable=True)
+    #device_name = db.Column(db.String(50), unique=False, nullable=True)
     created_time = db.Column(db.DateTime(), unique=False,default=datetime.utcnow)
-    device_status = db.Column(db.Integer,unique=False, default=0 )
+    #device_status = db.Column(db.Integer,unique=False, default=0 )
     
     @staticmethod
     def from_json(json_device):

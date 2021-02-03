@@ -62,6 +62,7 @@ class NewTaskForm(FlaskForm):
     uv =BooleanField('UV')
     humidity =BooleanField('Humidity')
     temp = BooleanField('Temperature')
+    helmet = BooleanField('Helmet')
 
     confirm = SubmitField('Confirm')
 

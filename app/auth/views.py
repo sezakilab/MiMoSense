@@ -52,7 +52,7 @@ def new_task():
     form = NewTaskForm()
     if form.validate_on_submit():
         # flash(current_user.firstname)
-        sensors = {'camera' : form.camera.data, 'co2' : form.co2.data, 'air_pressure' : form.air_pressure.data, 'motion' : form.motion.data, 'audio' : form.audio.data, 'uv' : form.uv.data, 'humidity' : form.humidity.data, 'temperature' : form.temp.data}
+        sensors = {'camera' : form.camera.data, 'co2' : form.co2.data, 'air_pressure' : form.air_pressure.data, 'motion' : form.motion.data, 'audio' : form.audio.data, 'uv' : form.uv.data, 'humidity' : form.humidity.data, 'temperature' : form.temp.data, 'helmet': form.helmet.data}
         cert=generate_certificate()
         task = Task(taskname=form.taskname.data, description=form.description.data, sensors=str(sensors),creator_id=current_user.id,task_status=1,certificate=cert)
         db.session.add(task)

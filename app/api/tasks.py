@@ -25,15 +25,28 @@ def show_task_info(taskid):
     server_ip=get_ip()
     return jsonify({"task_id":task.id,"task_name":task.taskname,"task_description":task.description,"task_sensors":task.sensors,"task_created_at":task.created_at,"task_creator_id":task.creator_id,"task_certificate":task.certificate,"server_ip":server_ip})
 
-@api.route('/tasks/<int:id>/join/',methods=['POST'])
-def new_device(id):
+@api.route('/tasks/join/',methods=['POST'])
+def new_device():
     #Register new device for task.
-    device = Device.from_json(request.json)
+    #task_id,task_certificate,device_ip,device_kind
+    #device = Device.from_json(request.json)
+    task_id = request.json.get('task_id')
+    task_certificate =request.json.get('task_certificate')
+    device_ip =request.json.get('device_ip')
+    device_kind =request.json.get('device_kind')
+    print(task_id)
+    print(task_certificate)
+    print(device_ip)
+    print(device_kind)
+    #Check task's certificate right or not.
+    #Need to check device's ip exist or not, if exist, then can not add anymore.
+    created_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+    device = Device(task_id=task_id,device_ip=device_ip,device_kind=device_kind,created_time=created_time)
     db.session.add(device)
     db.session.commit()
 
     #Get task's status
-    task = Task.query.get_or_404(id)
+    task = Task.query.get_or_404(task_id)
     status = task.task_status
     join_result = True
     return jsonify({'join_result':join_result,'device_id':device.id,'task_status':status})
