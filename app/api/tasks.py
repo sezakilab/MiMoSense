@@ -8,6 +8,7 @@ from .. import db
 import json
 import pymysql
 import requests
+import time
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 app.app_context().push()
@@ -53,6 +54,8 @@ def handle_mqtt_message(client,userdata, message):
         topic=message.topic,
         payload=message.payload.decode()
     )
+    #socketio.init_app(app)
+    #socketio.emit('mqtt_message',data=data)
     print(str(data['payload']))
     #write the data into the database.
     with app.app_context():
@@ -60,14 +63,18 @@ def handle_mqtt_message(client,userdata, message):
         task_name = data_json['task_name']
         task_id = data_json['task_id']
         creator_id = data_json['creator_id']
-        client_id = data_json['client_id']
+        #client_id = data_json['client_id']
+        
         #client_ip = data_json['client_ip']
-        #temperature = data_json['temperature']
+        temperature = data_json['temperature']
+        humidity = data_json['humidity']
         user = User.query.filter(User.id==creator_id).first()
 
         conn =pymysql.connect(host='localhost',user=user.lastname+"_"+str(user.id),password='han784533',db=user.lastname+"_"+str(user.id),port=3306)
         cursor = conn.cursor()
-        sql = "INSERT INTO %s VALUES (1,%d,'2021-01-21 08:56:10','camera','temp','humid','co2','air_pressure','motion','uv');" %(task_name+"_"+str(task_id),client_id)
+        upload_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        sql = "INSERT INTO %s VALUES (NULL,1,'%s','camera','%s','%s','co2','air_pressure','motion','uv');" %(task_name+"_"+str(task_id),upload_time,temperature,humidity)
+        print(sql)
         cursor.execute(sql)
         cursor.connection.commit()
         print("Just wrote to database!")

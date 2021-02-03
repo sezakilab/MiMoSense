@@ -13,7 +13,7 @@ mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 mqtt=Mqtt()
-socketio = SocketIO()
+#socketio = SocketIO()
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login' 
@@ -41,8 +41,8 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     mqtt.init_app(app)
-    mqtt.subscribe('test')
-    socketio.init_app(app)
+    #mqtt.subscribe('test')
+    #socketio.init_app(app)
     #socketio.run(app,debug=True,host='0.0.0.0',port=5000)
 
     from .main import main as main_blueprint

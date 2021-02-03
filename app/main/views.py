@@ -52,13 +52,13 @@ def task(taskid):
         if(taskstatusform.taskstatus.data == 'on'):
             flash("You just turn on the task: "+task.taskname)
             change_task_status(task,1)
-            mqtt.subscribe(task.taskname)
-            print('subscribe to '+task.taskname)
+            mqtt.subscribe(str(task.id) +'_'+ task.taskname)
+            print('subscribe to '+str(task.id) +'_'+task.taskname)
         elif (taskstatusform.taskstatus.data == 'off'):
             flash("You just turn off the task: "+task.taskname)
             change_task_status(task,0)
-            mqtt.subscribe(task.taskname)
-            print('unsubscribe '+task.taskname)
+            mqtt.unsubscribe(str(task.id) +'_'+ task.taskname)
+            print('unsubscribe '+str(task.id) +'_'+task.taskname)
 
     qrcodelink=generate_qrcode(task)
     return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,description_edit_form=description_edit_form,qrcodelink=qrcodelink)
