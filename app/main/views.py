@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import render_template, session, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from .. import db
-from ..models import User,Task
+from ..models import User,Task, Device
 from . import main
 from .forms import NameForm, DeleteForm, TaskStatusForm, TaskDescriptionForm, Sen_Plug_EditForm
 from flask import flash
@@ -40,6 +40,7 @@ def task(taskid):
         return render_template('404.html')
 
     delete_form=DeleteForm()
+    #delete the task
     taskstatusform = TaskStatusForm()
     if(task.task_status == 0):
         taskstatusform.taskstatus.data='off'
@@ -61,7 +62,10 @@ def task(taskid):
             print('unsubscribe '+str(task.id) +'_'+task.taskname)
 
     qrcodelink=generate_qrcode(task)
-    return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,description_edit_form=description_edit_form,qrcodelink=qrcodelink)
+    #Display all the device information under the task.
+    devices = Device.query.filter(Device.task_id==task.id).all()
+
+    return render_template('task.html',task=task,delete_form=delete_form,taskstatusform = taskstatusform,description_edit_form=description_edit_form,qrcodelink=qrcodelink,devices=devices)
 
 #Function for generating the qrcode.
 def generate_qrcode(task):

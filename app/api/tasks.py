@@ -81,12 +81,18 @@ def handle_mqtt_message(client,userdata, message):
         #client_ip = data_json['client_ip']
         temperature = data_json['temperature']
         humidity = data_json['humidity']
+        co2 = data_json['co2']
+        air_pressure = data_json['air_pressure']
+        motion = data_json['motion']
+        gps = data_json['gps']
+        uv = data_json['uv']
+
         user = User.query.filter(User.id==creator_id).first()
 
         conn =pymysql.connect(host='localhost',user=user.lastname+"_"+str(user.id),password='han784533',db=user.lastname+"_"+str(user.id),port=3306)
         cursor = conn.cursor()
         upload_time = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
-        sql = "INSERT INTO %s VALUES (NULL,1,'%s','camera','%s','%s','co2','air_pressure','motion','uv');" %(task_name+"_"+str(task_id),upload_time,temperature,humidity)
+        sql = "INSERT INTO %s VALUES (NULL,1,'%s','camera','%s','%s','%s','%s','%s','%s','%s');" %(task_name+"_"+str(task_id),upload_time,temperature,humidity,co2,air_pressure,motion,gps,uv)
         print(sql)
         cursor.execute(sql)
         cursor.connection.commit()

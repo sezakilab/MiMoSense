@@ -22,7 +22,7 @@ login_manager.login_view = 'auth.login'
 def create_app(config_name):
     app = Flask(__name__)
     # Configure the MQTT client
-    app.config['MQTT_BROKER_URL'] = 'localhost'  
+    app.config['MQTT_BROKER_URL'] = '5.196.95.208'  
     app.config['MQTT_BROKER_PORT'] = 1883  # default port for non-tls connection
     app.config['MQTT_USERNAME'] = ''  # set the username here if you need authentication for the broker
     app.config['MQTT_PASSWORD'] = ''  # set the password here if the broker demands authentication
@@ -41,7 +41,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     mqtt.init_app(app)
-    os.system('brew services start mosquitto')
+    #os.system('brew services start mosquitto')
     #os.system('sudo service mosquitto start')
 
     #mqtt.subscribe('test')
