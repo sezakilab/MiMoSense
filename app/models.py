@@ -61,7 +61,6 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
-
 class Task(db.Model):
     __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
@@ -75,6 +74,7 @@ class Task(db.Model):
     task_status = db.Column(db.Integer,unique=False, default=0 )
     delete_status = db.Column(db.Integer,unique=False, default=0 )
     certificate = db.Column(db.String(10), unique=False, nullable=True)
+    upload_frequency = db.Column(db.Integer,unique=False, default=1 )
 
     def __repr__(self):
         return '<Task %r>' % self.taskname

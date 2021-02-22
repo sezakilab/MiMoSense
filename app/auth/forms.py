@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import TextField
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
+from wtforms import StringField, PasswordField, BooleanField, SubmitField,IntegerField
+from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo,InputRequired
 from wtforms import ValidationError
 from ..models import User
 
@@ -54,6 +54,7 @@ class NewTaskForm(FlaskForm):
                'Description must have only letters, numbers, space or '
                'underscores')])
     #sensors_text =TextField('Sensors')
+    upload_frequency = IntegerField('Upload Frequency (number only)',validators=[InputRequired()])
     camera =BooleanField('Camera')
     co2 =BooleanField('Co2')
     air_pressure =BooleanField('Air Pressure')
