@@ -54,19 +54,36 @@ class NewTaskForm(FlaskForm):
                'Description must have only letters, numbers, space or '
                'underscores')])
     #sensors_text =TextField('Sensors')
-    upload_frequency = IntegerField('Upload Frequency (number only)',validators=[InputRequired()])
-    camera =BooleanField('Camera')
-    co2 =BooleanField('Co2')
-    air_pressure =BooleanField('Air Pressure')
+    upload_frequency = IntegerField('Upload Frequency (in second, number only)',validators=[InputRequired()])
+    
     motion =BooleanField('Motion')
-    audio =BooleanField('Audio')
-    uv =BooleanField('UV')
-    humidity =BooleanField('Humidity')
+    motion_frequency = IntegerField('Motion Frequency',validators=[InputRequired()])
+
     temp = BooleanField('Temperature')
-    helmet = BooleanField('Helmet')
+    temp_frequency = IntegerField('Temperature Frequency',validators=[InputRequired()])
+
+    humidity =BooleanField('Humidity')
+    humidity_frequency = IntegerField('Humidity Frequency',validators=[InputRequired()])
+
+    helmet = BooleanField('Helmet Motion')
+    helmet_frequency = IntegerField('Helmet Motion Frequency',validators=[InputRequired()])
+
+    uv =BooleanField('UV')
+    uv_frequency = IntegerField('UV Frequency',validators=[InputRequired()])
+
+    camera =BooleanField('Camera')
+    camera_frequency = IntegerField('Camera Frequency',validators=[InputRequired()])
+    
+    co2 =BooleanField('Co2')
+    co2_frequency = IntegerField('Co2 Frequency',validators=[InputRequired()])
+    
+    air_pressure =BooleanField('Air Pressure')
+    air_pressure_frequency = IntegerField('Air Pressure Frequency',validators=[InputRequired()])
+
+    audio =BooleanField('Audio')
+    audio_frequency = IntegerField('Audio Frequency',validators=[InputRequired()])
 
     confirm = SubmitField('Confirm')
 
     #generate_qrcode = SubmitField('Generate QRcode')
-    
     

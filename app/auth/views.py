@@ -49,10 +49,18 @@ def register():
 @auth.route('/new_task', methods=['GET', 'POST'])
 @login_required
 def new_task():
-    form = NewTaskForm()
+    form = NewTaskForm(upload_frequency=1,motion_frequency=10,temp_frequency=1,humidity_frequency=1,helmet_frequency=1,uv_frequency=1,camera_frequency=1,co2_frequency=1,air_pressure_frequency=1,audio_frequency=1)
     if form.validate_on_submit():
         # flash(current_user.firstname)
-        sensors = {'camera' : form.camera.data, 'co2' : form.co2.data, 'air_pressure' : form.air_pressure.data, 'motion' : form.motion.data, 'audio' : form.audio.data, 'uv' : form.uv.data, 'humidity' : form.humidity.data, 'temperature' : form.temp.data, 'helmet': form.helmet.data}
+        sensors = {'camera' : {"camera_switch":form.camera.data,"camera_frequency":form.camera_frequency.data}, 
+        'co2' : {"co2_switch":form.co2.data,"co2_frequency":form.co2_frequency.data}, 
+        'air_pressure' : {"air_pressure_switch":form.air_pressure.data,"air_pressure_frequency":form.air_pressure_frequency.data}, 
+        'motion' : {"motion_switch":form.motion.data,"motion_frequency":form.motion_frequency.data}, 
+        'audio' : {"audio_switch":form.audio.data,"audio_frequency":form.audio_frequency.data},
+        'uv' : {"uv_switch":form.uv.data,"uv_frequency":form.uv_frequency.data}, 
+        'humidity' : {"humidity_switch":form.humidity.data,"humidity_frequency":form.humidity_frequency.data}, 
+        'temperature' : {"temperature_switch":form.temp.data,"temperature_frequency":form.temp_frequency.data}, 
+        'helmet': {"helmet_switch":form.helmet.data,"helmet_frequency":form.helmet_frequency.data}}
         cert=generate_certificate()
         task = Task(taskname=form.taskname.data, description=form.description.data, sensors=str(sensors),creator_id=current_user.id,task_status=1,certificate=cert,upload_frequency=form.upload_frequency.data)
         db.session.add(task)

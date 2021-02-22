@@ -66,7 +66,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     taskname = db.Column(db.String(50), unique=False, nullable=False)
     description = db.Column(db.String(50), unique=False, nullable=True)
-    sensors = db.Column(db.String(255), unique=False, nullable=True)
+    sensors = db.Column(db.String(1000), unique=False, nullable=True)
     plugins = db.Column(db.String(255), unique=False, nullable=True)
     created_at = db.Column(db.DateTime(), unique=False,default=datetime.utcnow)
     updated_at = db.Column(db.DateTime(255), unique=False, nullable=True)
