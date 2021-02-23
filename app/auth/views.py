@@ -140,7 +140,7 @@ def create_new_database(user):
 def create_new_databasetable(current_user,task):
     conn =pymysql.connect(host='localhost',user=current_user.lastname+"_"+str(current_user.id),password='han784533',db=current_user.lastname+"_"+str(current_user.id),port=3306)
     cursor = conn.cursor()
-    sql = "CREATE TABLE %s (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, client_id INT, receve_time DATETIME, camera varchar(20), temperature varchar(20), humidity varchar(20), co2 varchar(20), air_pressure varchar(20), motion varchar(20), gps varchar(20), uv varchar(20));"%(task.taskname+"_"+str(task.id))
+    sql = "CREATE TABLE %s (id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, client_id INT, receve_time DATETIME, camera varchar(1000), temperature varchar(1000), humidity varchar(1000), co2 varchar(1000), air_pressure varchar(1000), motion varchar(1000), gps varchar(1000), uv varchar(1000));"%(task.taskname+"_"+str(task.id))
     #Create data table with all sensors as column.
     cursor.execute(sql)
     cursor.connection.commit()
