@@ -56,6 +56,9 @@ class NewTaskForm(FlaskForm):
     #sensors_text =TextField('Sensors')
     upload_frequency = IntegerField('Upload Frequency (in second, number only)',validators=[InputRequired()])
     
+    gps =BooleanField('GPS')
+    gps_frequency = IntegerField('GPS Frequency',validators=[InputRequired()])
+
     motion =BooleanField('Motion')
     motion_frequency = IntegerField('Motion Frequency',validators=[InputRequired()])
 

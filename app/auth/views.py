@@ -49,7 +49,7 @@ def register():
 @auth.route('/new_task', methods=['GET', 'POST'])
 @login_required
 def new_task():
-    form = NewTaskForm(upload_frequency=1,motion_frequency=10,temp_frequency=1,humidity_frequency=1,helmet_frequency=1,uv_frequency=1,camera_frequency=1,co2_frequency=1,air_pressure_frequency=1,audio_frequency=1)
+    form = NewTaskForm(upload_frequency=1,gps_frequency=1,motion_frequency=10,temp_frequency=1,humidity_frequency=1,helmet_frequency=1,uv_frequency=1,camera_frequency=1,co2_frequency=1,air_pressure_frequency=1,audio_frequency=1)
     if form.validate_on_submit():
         # flash(current_user.firstname)
         sensors = {'camera' : {"camera_switch":form.camera.data,"camera_frequency":form.camera_frequency.data}, 
