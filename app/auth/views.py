@@ -53,6 +53,7 @@ def new_task():
     if form.validate_on_submit():
         # flash(current_user.firstname)
         sensors = {'camera' : {"switch":form.camera.data,"frequency":form.camera_frequency.data}, 
+        'gps' : {"switch":form.gps.data,"frequency":form.gps_frequency.data},
         'co2' : {"switch":form.co2.data,"frequency":form.co2_frequency.data}, 
         'air_pressure' : {"switch":form.air_pressure.data,"frequency":form.air_pressure_frequency.data}, 
         'motion' : {"switch":form.motion.data,"frequency":form.motion_frequency.data}, 
